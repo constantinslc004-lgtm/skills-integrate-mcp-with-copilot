@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion</title>
+</head>
+<body>
+    <h2>Connexion</h2>
+    <form id="login-form">
+        <label>Nom d'utilisateur : <input type="text" name="username" id="username"></label><br>
+        <label>Mot de passe : <input type="password" name="password" id="password"></label><br>
+        <button type="submit">Se connecter</button>
+    </form>
+    <div id="login-message"></div>
+    <script>
+    document.getElementById('login-form').onsubmit = async function(e) {
+        e.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const response = await fetch('/token', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
+        });
+        const data = await response.json();
+        if (response.ok) {
+            localStorage.setItem('token', data.access_token);
+            window.location.href = '/static/index.html';
+        } else {
+            document.getElementById('login-message').innerText = data.detail || 'Erreur de connexion';
+        }
+    };
+    </script>
+</body>
+</html>
