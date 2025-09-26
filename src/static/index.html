@@ -47,4 +47,18 @@
 
     <script src="app.js"></script>
   </body>
-</html>
+    <h1>Bienvenue sur la plateforme d'activités !</h1>
+    <div id="user-info"></div>
+    <button id="logout-btn" style="display:none;">Déconnexion</button>
+    <script>
+    // Affiche le nom d'utilisateur si connecté
+    const token = localStorage.getItem('token');
+    if (token) {
+      document.getElementById('user-info').innerText = `Connecté en tant que : ${token}`;
+      document.getElementById('logout-btn').style.display = 'inline-block';
+    }
+    document.getElementById('logout-btn').onclick = function() {
+      localStorage.removeItem('token');
+      window.location.href = '/templates/login.html';
+    };
+    </script>
